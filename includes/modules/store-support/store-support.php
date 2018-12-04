@@ -364,11 +364,11 @@ class Dokan_Store_Support {
 
         ob_start();
         ?>
-        <div class="dokan-support-intro-user"><strong><?php printf( __( 'Hi, %s', 'dokan' ), $user_login ) ?></strong></div>
-        <div class="dokan-support-intro-text"><?php _e( 'Create a new support topic', 'dokan' ) ?></div>
+        <div class="dokan-support-intro-user"><strong><?php printf( __( 'Hi there!', 'dokan' )) ?></strong></div>
+        <div class="dokan-support-intro-text"><?php _e( 'Ask seller a question', 'dokan' ) ?></div>
         <form class="dokan-form-container" id="dokan-support-form">
             <div class="dokan-form-group">
-                <label class="dokan-form-label" for="dokan-support-subject"><?php _e( 'Subject :', 'dokan' ) ?></label>
+                <label class="dokan-form-label" for="dokan-support-subject"><?php _e( 'Subject:', 'dokan' ) ?></label>
                 <input required class="dokan-form-control" type="text" name='dokan-support-subject' id='dokan-support-subject'/>
             </div>
             <div class="dokan-form-group">
@@ -383,14 +383,14 @@ class Dokan_Store_Support {
             </div>
 
             <div class="dokan-form-group">
-                <label class="dokan-form-label" for="dokan-support-msg"><?php _e( 'Message :', 'dokan' ) ?></label>
+                <label class="dokan-form-label" for="dokan-support-msg"><?php _e( 'Your message:', 'dokan' ) ?></label>
                 <textarea required class="dokan-form-control" name='dokan-support-msg' rows="5" id='dokan-support-msg'></textarea>
             </div>
             <input type="hidden" name='store_id' value="<?php echo $seller_id; ?>" />
 
             <?php wp_nonce_field( 'dokan-support-form-action', 'dokan-support-form-nonce' ); ?>
             <div class="dokan-form-group">
-                <input id='support-submit-btn' type="submit" value="<?php _e( 'Submit', 'dokan' ) ?>" class="dokan-w5 dokan-btn dokan-btn-theme"/>
+                <input id='support-submit-btn' type="submit" value="<?php _e( 'Send', 'dokan' ) ?>" class="dokan-w5 dokan-btn dokan-btn-theme"/>
             </div>
         </form>
         <div class="dokan-clearfix"></div>
@@ -463,7 +463,7 @@ class Dokan_Store_Support {
 
             $this->send_email_to_seller( $postdata['store_id'], $post_id );
 
-            $success_msg = __( 'Thank you. Your ticket has been submitted!', 'dokan' );
+            $success_msg = __( 'Thanks! Your message has been sent to seller. Please check your account dashboard for sellers reply', 'dokan' );
 
             do_action( 'dss_new_ticket_created', $post_id, $postdata['store_id'] );
 
@@ -661,8 +661,8 @@ class Dokan_Store_Support {
             <table class="dokan-table dokan-support-table">
                 <thead>
                     <tr>
-                        <th><?php _e( 'Topic', 'dokan' ) ?></th>
-                        <th><?php _e( 'Title', 'dokan' ) ?></th>
+                        <th><?php _e( 'Ref', 'dokan' ) ?></th>
+                        <th><?php _e( 'Subject', 'dokan' ) ?></th>
                         <th><?php _e( 'Customer', 'dokan' ) ?></th>
                         <th><?php _e( 'Status', 'dokan' ) ?></th>
                         <th><?php _e( 'Date', 'dokan' ) ?></th>
@@ -725,7 +725,7 @@ class Dokan_Store_Support {
               <?php endforeach; ?>
           <?php else :?>
                     <div class="dokan-error">
-                        <?php _e( 'No tickets found!' , 'dokan' ) ?>
+                        <?php _e( 'No messages found!' , 'dokan' ) ?>
                     </div>
           <?php endif;?>
                 </tbody>
@@ -805,7 +805,7 @@ class Dokan_Store_Support {
         if ( $topic->have_posts() ) {
             while ( $topic->have_posts() ) : $topic->the_post();
             ?>
-        <a href="<?php echo $back_url ?>">&larr; <?php _e( 'Back to Tickets' , 'dokan' ); ?></a>
+        <a href="<?php echo $back_url ?>">< <?php _e( 'Back' , 'dokan' ); ?></a>
             <div class="dokan-support-single-title">
                 <h1><?php the_title() ?></h1>
                 <?php
@@ -897,7 +897,7 @@ class Dokan_Store_Support {
                             'title_reply'          => __( 'Leave a Reply', 'dokan' ),
                             'title_reply_to'       => '',
                             'cancel_reply_link'    => __( 'Cancel Reply', 'dokan' ),
-                            'label_submit'         => __( 'Submit Reply', 'dokan' ),
+                            'label_submit'         => __( 'Send Reply', 'dokan' ),
                             'format'               => 'html5',
                             'comment_field'        => $comment_field,
                             'must_log_in'          => '<p class="must-log-in">' .
@@ -974,9 +974,9 @@ class Dokan_Store_Support {
             <table class="dokan-table dokan-support-table">
                 <thead>
                     <tr>
-                        <th><?php _e( 'Topic', 'dokan' ) ?></th>
-                        <th><?php _e( 'Store Name', 'dokan' ) ?></th>
-                        <th><?php _e( 'Title', 'dokan' ) ?></th>
+                        <th><?php _e( 'Ref', 'dokan' ) ?></th>
+                        <th><?php _e( 'Subject', 'dokan' ) ?></th>
+                        <th><?php _e( 'Seller', 'dokan' ) ?></th>
                         <th><?php _e( 'Status', 'dokan' ) ?></th>
                         <th><?php _e( 'Date', 'dokan' ) ?></th>
                     </tr>
@@ -996,6 +996,11 @@ class Dokan_Store_Support {
                             </a>
                         </td>
                         <td>
+                            <a href="<?php echo $topic_url ?>">
+                                <?php echo $topic->post_title; ?>
+                            </a>
+                        </td>
+                        <td>
                             <div class="dokan-support-customer-name">
                                 <?php
                                     $store_info = dokan_get_store_info( $topic->store_id );
@@ -1005,11 +1010,7 @@ class Dokan_Store_Support {
                                 <strong><a href="<?php echo $store_url ?>" target="_blank"><?php  echo $store_name ?></a></strong>
                             </div>
                         </td>
-                        <td>
-                            <a href="<?php echo $topic_url ?>">
-                                <?php echo $topic->post_title; ?>
-                            </a>
-                        </td>
+                        
                         <?php
                             switch ( $topic->post_status ) {
                                 case 'open':
@@ -1035,12 +1036,12 @@ class Dokan_Store_Support {
                             ?>
                         <td><span class="dokan-label <?php echo $topic_status ?>"><?php echo $topic->post_status; ?></span></td>
 
-                        <td class="dokan-order-date"> <span><?php echo $topic->post_date?></span></td>
+                        <td class="dokan-order-date"> <span><?php echo get_the_date('F j, Y \a\t g:i a',$topic->ID)?></span></td>
                     </tr>
                 <?php endforeach; ?>
                 <?php else :?>
                     <div class="dokan-error">
-                        <?php _e( 'No tickets found!' , 'dokan' ) ?>
+                        <?php _e( 'No Messages found!' , 'dokan' ) ?>
                     </div>
                 <?php endif;?>
                 </tbody>
@@ -1279,14 +1280,14 @@ class Dokan_Store_Support {
         $store_email        = get_userdata( $store_id )->user_email;
         $url                = dokan_get_navigation_url( 'support' ) . $ticket->ID;
         $account_ticket_url = trailingslashit( dokan_get_page_url( 'myaccount', 'woocommerce' ) ) . 'support-tickets/' . $ticket->ID;
-        $subject            = sprintf( __( '[%s][%d] A New Reply on Your Ticket', 'dokan' ), $email->get_from_name(), $ticket->ID );
+        $subject            = sprintf( __( '%s - reply to customer message (%d)', 'dokan' ), $email->get_from_name(), $ticket->ID );
 
         ob_start();
 
         if ( $to_store ) {
-            include dirname( __FILE__ ) . '/templates/email/new-reply-to-store.php';
+            include get_theme_file_path() . '/dokan/email/new-reply-to-store.php';
         } else {
-            include dirname( __FILE__ ) . '/templates/email/new-reply-to-user.php';
+            include get_theme_file_path() . '/dokan/email/new-reply-to-user.php';
         }
 
         $message  = ob_get_clean();
@@ -1483,10 +1484,10 @@ class Dokan_Store_Support {
         $store_name  = $store['store_name'];
         $store_email = get_userdata( $user )->user_email;
         $url         = dokan_get_navigation_url( 'support' ) . $topic_id;
-        $subject     = sprintf( __( '[%d] A New Support Ticket', 'dokan' ), $topic_id );
+        $subject     = sprintf( __( 'Digjack - new customer message (%d)', 'dokan' ), $topic_id );
 
         ob_start();
-        include dirname( __FILE__ ) . '/templates/email/new-ticket.php';
+        include get_theme_file_path() . '/dokan/email/new-ticket.php';
         $message = ob_get_clean();
 
         $search  = array('[store-name]', '[support-dashboard]', '[site-name]', '[site-url]');
